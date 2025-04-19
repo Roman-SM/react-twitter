@@ -1,23 +1,31 @@
-import "./index.css"
-import {useState, memo} from "react"
+import "./index.css";
+import { useState, memo } from "react";
 // import {useContext} from 'react'
 // import { ThemeContext } from "../../App"
 
-function Component({placeholder, button, onSubmit}) {
-  const [value, setValue] = useState("")
-  const handleChange = (e) => setValue(e.target.value)
+function Component({ placeholder, button, onSubmit }) {
+  const [value, setValue] = useState("");
+  const handleChange = (e) => setValue(e.target.value);
   const handleSubmit = () => {
-    if(value === 0) return null
+    if (value === 0) return null;
 
-    if(onSubmit) {
-      onSubmit(value)
+    if (onSubmit) {
+      onSubmit(value);
     } else {
       throw new Error("onSubmit props is undefined");
     }
 
-    setValue("")
-  }
-  const isDisabled = value.length === 0
+    setValue("");
+  };
+  const isDisabled = value.length === 0;
+
+  const handleKeyDown = (e) => {
+    // Перевірка на натискання Command (Mac) або Ctrl (Windows/Linux) + Enter
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault(); // Запобігаємо переходу на новий рядок
+      handleSubmit(); // Відправляємо дані при натисканні Command/Ctrl + Enter
+    }
+  };
 
   // const theme = useContext(ThemeContext)
 
@@ -25,11 +33,24 @@ function Component({placeholder, button, onSubmit}) {
 
   return (
     <div className="field-form">
-      <textarea onChange={handleChange} value={value} rows={2} placeholder={placeholder} className="field-form__field"></textarea>
-      <button disabled={isDisabled} onClick={handleSubmit} className="field-form__button">{button}</button>
+      <textarea
+        onChange={handleChange}
+        value={value}
+        rows={2}
+        placeholder={placeholder}
+        className="field-form__field"
+        onKeyDown={handleKeyDown}
+      ></textarea>
+      <button
+        disabled={isDisabled}
+        onClick={handleSubmit}
+        className="field-form__button"
+      >
+        {button}
+      </button>
       {/* <button onClick={theme.toggle} className="field-form__button">Change theme</button> */}
     </div>
-  )
+  );
 }
 
-export default memo(Component)
+export default memo(Component);
