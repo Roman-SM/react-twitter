@@ -19,14 +19,6 @@ function Component({ placeholder, button, onSubmit }) {
   };
   const isDisabled = value.length === 0;
 
-  const handleKeyDown = (e) => {
-    // Перевірка на натискання Command (Mac) або Ctrl (Windows/Linux) + Enter
-    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-      e.preventDefault(); // Запобігаємо переходу на новий рядок
-      handleSubmit(); // Відправляємо дані при натисканні Command/Ctrl + Enter
-    }
-  };
-
   // const theme = useContext(ThemeContext)
 
   // console.log(theme)
@@ -39,7 +31,6 @@ function Component({ placeholder, button, onSubmit }) {
         rows={2}
         placeholder={placeholder}
         className="field-form__field"
-        onKeyDown={handleKeyDown}
       ></textarea>
       <button
         disabled={isDisabled}
